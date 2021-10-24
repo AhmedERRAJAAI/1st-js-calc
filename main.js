@@ -1,114 +1,105 @@
-let btns = document.querySelectorAll('.btn');
-let screen = document.getElementById('screen');
-let equal = document.getElementById('equal');
-let cancel = document.getElementById('ac');
-
-let result = 0;
-let stNum = '';
-let stNum2 = '';
-let oper = '';
-
-
-cancel.onclick= _ =>{
-    screen.textContent = '';
-    getTheFirstNumber();
+class Calculator{
+    constructor(currentOperandDisplay,previousOperandDisplay){
+        this.previousOperandDisplay = previousOperandDisplay;
+        this.currentOperandDisplay = currentOperandDisplay;
+        this.clear();
+    }
+    clear(){
+        this.currentOperand = '';
+        this.previousOperand = '';
+        this.operation = undefined;
+    }
+    delete(){
+        this.currentOperand = this.currentOperand.toString().slice(0, -1);
+    }
+    appendNumber(number){
+        if((number === '.' && this.currentOperand.includes('.')) ||
+         (number === '.')&& this.currentOperand.length === 0) return;
+         this.currentOperand = this.currentOperand.toString() + number.toString();
+    }
+    chooseOperation(operation){       
+       if(this.currentOperand === '' && this.previousOperand ==='') return;
+        if(this.previousOperand !=''){
+            this.compute();
+        }
+       console.log(operation);
+        if(this.operation === undefined){
+            this.operation = operation;
+            this.previousOperand = this.currentOperand;
+            this.currentOperand = '';
+        }else{
+            this.operation = operation;
+        }
+    }
+    compute(){
+        let computation = 0;
+        let prev = parseFloat(this.previousOperand);
+        let current = parseFloat(this.currentOperand);
+        if(isNaN(prev)||isNaN(current)) return
+        switch(this.operation){
+            case '+':
+                computation = prev + current;
+                break;
+            case '-':
+                computation = prev - current;
+                break;
+            case '*':
+                computation = prev * current;
+                break;
+            case '/':
+                computation = prev / current;
+                break;
+            default:
+                return
+        }
+                this.currentOperand = computation;
+                this.previousOperand = '';
+                this.operation = undefined;
+    }
+    updateDisplay(){
+       this.currentOperandDisplay.innerText = this.currentOperand;
+       if(this.operation != null){
+       this.previousOperandDisplay.innerText = `${this.previousOperand} ${this.operation}`;
+    }else{
+        this.previousOperandDisplay.innerText = `${this.previousOperand}`;
+    }
+}
 }
 
-function getTheFirstNumber(){
-    stNum = '';
-    console.log("getting the 1st number");
-btns.forEach(num =>{
-    num.onclick = _ =>{
-        if(parseInt(num.textContent).toString() !== 'NaN'){
-            stNum += num.textContent;
-            screen.textContent = stNum;
-            }else if(num.textContent === 'Del'){
-                if(stNum.length>0){
-                        stNum = stNum.slice(0,-1);
-                        screen.textContent = stNum;
-                }else{
-                    stNum = 0;
-                    screen.textContent = stNum;
-                }
-            }else if(num.textContent === 'AC'){
-                screen.textContent = '';
-                getTheFirstNumber();
-                    
-            }else{
-                getTheOperator();
-            }
-    }
+let numbersBtns = document.querySelectorAll('[data-number]');
+let operationBtns = document.querySelectorAll('[data-operation]');
+let equalsBtn = document.querySelector('[data-equals]');
+let deleteBtn = document.querySelector('[data-delete]');
+let allClearBtn = document.querySelector('[data-all-clear]');
+let previousOperandDisplay = document.querySelector('[data-previous-operand]');
+let currentOperandDisplay = document.querySelector('[data-current-operand]');
+
+
+let calculator = new Calculator(currentOperandDisplay,previousOperandDisplay);
+
+numbersBtns.forEach(button=>{
+    button.addEventListener('click',()=>{
+        calculator.appendNumber(button.innerText);
+        calculator.updateDisplay();
+    })
 })
-}
 
-function getTheOperator(){
-    oper = '';
-    console.log("getting into operator function");
-    btns.forEach(num =>{
-        num.onclick = _ =>{
-            if(parseInt(num.textContent).toString() === 'NaN'){
-                oper = num.textContent;
-                screen.textContent = oper;
-                if(oper.length === 1){
-                    console.log("sending toward get 2nd");
-                    getThe2ndNumber();
-                }else if(num.textContent === 'AC'){
-                    screen.textContent = '';
-                    getTheFirstNumber();
-                }
-            }else{
-                getTheOperator();
-            }
-        }
-    })
-}
+operationBtns.forEach(operButton =>{
+   operButton.addEventListener('click',()=>{
+       calculator.chooseOperation(operButton.innerText);
+       calculator.updateDisplay();
+   })
+})
 
-function getThe2ndNumber(){
-    stNum2 = '';
-    console.log("getting the 2nd number");
-    btns.forEach(num =>{
-        num.onclick = _ =>{
-            if(parseInt(num.textContent).toString() !== 'NaN'){
-                stNum2 += num.textContent;
-                screen.textContent = stNum2;
-                }else if(num.textContent === 'Del'){
-                    if(stNum2.length>0){
-                            stNum2 = stNum.slice(0,-1);
-                            screen.textContent = stNum2;
-                    }else{
-                        stNum2 = 0;
-                        screen.textContent = stNum2;
-                    }
-                }else if(num.textContent === 'AC'){
-                        screen.textContent = '';
-                        getTheFirstNumber();
-                }
-        }
-    })
-
-    equal.onclick = _ =>{
-        console.log("equal clicked")
-    if(oper === '+'){
-        result = parseInt(stNum) + parseInt(stNum2);
-        screen.textContent = result;
-        getTheFirstNumber();
-    }else if(oper === '-'){
-        result = parseInt(stNum) - parseInt(stNum2);
-        screen.textContent = result;
-        getTheFirstNumber();
-    }
-    if(oper === '*'){
-        result = parseInt(stNum) * parseInt(stNum2);
-        screen.textContent = result;
-        getTheFirstNumber();
-    }
-    if(oper === '/'){
-        result = parseInt(stNum) / parseInt(stNum2);
-        screen.textContent = result;
-        getTheFirstNumber();
-    }
-    }
-    }
-
-
-getTheFirstNumber();
+equalsBtn.addEventListener('click',()=>{
+    calculator.compute();
+    calculator.updateDisplay();
+})
+allClearBtn.addEventListener('click',()=>{
+    calculator.clear();
+    calculator.updateDisplay();
+})
+deleteBtn.addEventListener('click',()=>{
+    calculator.delete();
+    calculator.updateDisplay();
+})

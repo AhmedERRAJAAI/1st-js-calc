@@ -11,43 +11,38 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- font awesome link -->
     <link rel="stylesheet" href="css/all.min.css">
+    <!-- font importation link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;400;600;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
-        <div class="calculator">
-            <div class="row1">
-            <div id="screen"></div>
-            </div>
+    <div class="calculator">
+        <div class="output">
+            <div data-previous-operand class="previous-operand"></div>
+            <div data-current-operand class="current-operand"></div>
+        </div>        
+        <button data-all-clear class="span-two">AC</button>
+        <button data-delete>Del</button>
+        <button data-operation >/</button>
+        <button data-number>1</button>
+        <button data-number>2</button>
+        <button data-number>3</button>
+        <button data-operation>*</button>
+        <button data-number>4</button>
+        <button data-number>5</button>
+        <button data-number>6</button>
+        <button data-operation >+</button>
+        <button data-number>7</button>
+        <button data-number>8</button>
+        <button data-number>9</button>
+        <button data-operation >-</button>
+        <button data-number>.</button>
+        <button data-number>0</button>
+        <button data-equals class="span-two">=</button>
+    </div>
 
-            <div class="row row2 ">
-                <div class="btn" id="ac">AC</div>
-                <div class="btn" id="del">Del</div>
-                <div class="btn" id="plus">+</div>
-            </div>
-            <div class="row row3">
-                <div class="btn" id="1">1</div>
-                <div class="btn" id="2">2</div>
-                <div class="btn" id="3">3</div>
-                <div class="btn" id="minus">-</div>
-            </div>
-            <div class="row row3">
-                <div class="btn" id="4">4</div>
-                <div class="btn" id="5">5</div>
-                <div class="btn" id="6">6</div>
-                <div class="btn" id="divi">/</div>
-            </div>
-            <div class="row row3">
-                <div class="btn" id="4">7</div>
-                <div class="btn" id="5">8</div>
-                <div class="btn" id="6">9</div>
-                <div class="btn" id="multi">*</div>
-            </div>
-            <div class="row row4">
-                <div class="btn" id="coma"> </div>
-                <div class="btn" id="zero">0</div>
-                <div class="btn" id="equal">=</div>
-            </div>
-        </div>
     <script src="main.js"></script>
 </body>
 </html>
